@@ -2,9 +2,18 @@ import axios, { AxiosInstance } from 'axios';
 
 import { Injectable } from '@nestjs/common';
 import { PokeResponse } from './interfaces/poke-response.interface';
+import { Model } from 'mongoose';
+import { Pokemon } from '../pokemon/entities/pokemon.entity';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class SeedService {
+
+  constructor(
+    @InjectModel(Pokemon.name)
+    private readonly PokemonModel: Model<Pokemon>
+  ){}
+  
 
   private readonly axios: AxiosInstance = axios
 
