@@ -19,12 +19,24 @@ export class SeedService {
 
   
   async executeSeed(){
-    const res = await axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=5')
+
+    await this.PokemonModel.deleteMany()
+
+    const res = await axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=650')
+
+    const pokemonInsert : {name: string,id_pokemon: number}[] = []
 
     res.data.results.map(({name,url}) => {
       const id_pokemon:number = +url.split('/')[6]
+      // await this.PokemonModel.create({name,id_pokemon}) Es una opcion
+      pokemonInsert.push({name,id_pokemon})
     })
+
+    // * La opcion mas eficaz
+
+    await this.PokemonModel.insertMany(pokemonInsert)
     
-    return res.data.results
+    return 'Seed executed'
+    
   }
 }
