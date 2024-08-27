@@ -8,15 +8,21 @@ import { Pokemon } from './entities/pokemon.entity';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { pokemonDto } from 'src/common/dto/pokemon-paginate.dto';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
 export class PokemonService {
 
+  private  defaultlimit:number;
+
   constructor(
     @InjectModel(Pokemon.name)
-    private readonly PokemonModel: Model<Pokemon>
-  ){}
+    private readonly PokemonModel: Model<Pokemon>,
+    private readonly configService: ConfigService
+  ){
+    this.defaultlimit = configService.get<number>('defaultlimit')
+  }
   
   async create(createPokemonDto: CreatePokemonDto) {
 
@@ -37,7 +43,7 @@ export class PokemonService {
 
   findAll(pokemonDto:pokemonDto) {
 
-    const {limit = 10,offset = 0} = pokemonDto
+    const {limit = this.defaultlimit,offset = 0} = pokemonDto
 
     console.log(limit,offset)
 
