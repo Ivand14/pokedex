@@ -20,7 +20,7 @@ import { join } from 'path';
       rootPath: join(__dirname,'..','public'),
       }),
     PokemonModule,
-    MongooseModule.forRoot(process.env.MONGO_DB),
+    MongooseModule.forRoot(process.env.MONGO_DB,{dbName:'Pokemons'}),
     CommonModule,
     SeedModule,
   ],
